@@ -7,27 +7,20 @@ import 'package:flutter/material.dart';
 
 class ItemField extends StatelessWidget {
 
-    ItemField({TextEditingController item, TextEditingController price});
-
+    final TextEditingController item;
+    final TextEditingController price;
+    ItemField({
+      this.item, 
+      this.price
+      });
+      //assert(item != null),
+    //  assert(price != null);
+     // item = new TextEditingController(),
+      //price = new TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    return Design(
-      testingWidget: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        //mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Padding(padding: EdgeInsets.all(10),),
-          Center(child:_fip()),
-          Padding(padding: EdgeInsets.all(10),),
-          Center(child:_fip()),
-          Padding(padding: EdgeInsets.all(10),),
-          Center(child:_fip()),
-          Padding(padding: EdgeInsets.all(10),),
-          Center(child:_fip()),
-          ],
-      ),
-    );
+    return _fip();
   }
   Widget _fip(){
       return Container(
@@ -70,6 +63,7 @@ class ItemField extends StatelessWidget {
         ),
       color: Color(0xFF770732),
       child: TextField(
+        controller: item,
         style: TextStyle(
           color: Colors.white
         ),
@@ -92,6 +86,7 @@ class ItemField extends StatelessWidget {
         ),
           color: Color(0xFF770732),
           child: TextField(
+            controller: price,
             keyboardType: TextInputType.number,
             style: TextStyle(
              color: Colors.white
