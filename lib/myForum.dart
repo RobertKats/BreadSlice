@@ -3,6 +3,17 @@ import 'package:breadslice/widgets/itemField.dart';
 import 'package:breadslice/widgets/userField.dart';
 
 
+class userData{
+  TextEditingController user = new TextEditingController();
+  String price="";
+  
+}
+class itemData{
+  TextEditingController item = new TextEditingController();
+  TextEditingController price = new TextEditingController();
+  List<userData> subList = new List<userData>();
+}
+
 class MyForum extends StatefulWidget{
   @override
   State<StatefulWidget> createState() => MyForumState();
@@ -10,23 +21,14 @@ class MyForum extends StatefulWidget{
 }
 class MyForumState extends State<MyForum>{
 
-  List<ItemField> items = new List<ItemField>();
-  Map<ItemField,List<UserField>> subList = Map<ItemField,List<UserField>>();
+  List<itemData> itemList = new List<itemData>();
   @override
   void initState() {
-    var item = new TextEditingController();
-    var price = new TextEditingController();
-    var first = ItemField(item: item, price: price,);
-    items.add(first);
-     var sublistone =new List<UserField>();
-    //sublistone.add(new UserField(price:  new TextEditingController() ,user: new TextEditingController()));
-    subList[first] = sublistone;
-    
-    
+    itemList.add(itemData());
     super.initState();
   }
   void _update(){
-        Calculations(items,subList).calculate();
+        Calculations(itemList).calculate();
         // setState(() {
           
         // });
@@ -51,11 +53,7 @@ class MyForumState extends State<MyForum>{
       body: _mainList(),
       floatingActionButton: FloatingActionButton(
         onPressed: (){
-          var item = new TextEditingController();
-          var price = new TextEditingController();
-          var itemObj = ItemField(item: item, price: price,);
-          items.add(itemObj);
-          subList[itemObj] = new List<UserField>(); 
+          itemList.add(itemData());
           setState(() {       
           });
         },
@@ -67,19 +65,18 @@ class MyForumState extends State<MyForum>{
     return Column(
         children: <Widget>[
           Padding( padding: EdgeInsets.all(2),),
-          Center (child: items[i]),
+          Center(child: ItemField(item: itemList[i].item ,price:itemList[i].price ,),),
           Padding( padding: EdgeInsets.all(2),),
-          Center (child:_subList(items[i])),
+          Center (child:_subList(itemList[i].subList),)
         ],
     );
   }
-  Widget _subList(ItemField item){
+  Widget _subList(List<userData> sublist){
       return ListView.builder(
         shrinkWrap: true,
         physics: ClampingScrollPhysics(),
         itemBuilder:(context,i){
-          if( subList[item].length== i){
-            //print("boop");
+          if( sublist.length== i){
             return Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
@@ -87,8 +84,9 @@ class MyForumState extends State<MyForum>{
                   shape: CircleBorder(),
                   child: Icon(Icons.remove),
                   onPressed: (){
-                    if(subList[item].length != 0)
-                      subList[item].removeLast();
+                    if(sublist.length != 0)
+                      sublist.removeLast();
+                     // sublist[item].removeLast();
                       setState(() { });
                   },
                 ),
@@ -97,7 +95,7 @@ class MyForumState extends State<MyForum>{
                   shape: CircleBorder(),
                   child: Icon(Icons.add),
                   onPressed: (){
-                      subList[item].add(new UserField(user: new TextEditingController(), price: new TextEditingController(),));
+                      sublist.add(userData());
                       setState(() { });
                   },
                 ),
@@ -106,9 +104,11 @@ class MyForumState extends State<MyForum>{
             
           }
          return Column(
+           
            children: <Widget>[
               Padding( padding: EdgeInsets.all(1),),
-              (subList[item])[i],
+                UserField(user: sublist[i].user ,price: sublist[i].price,)
+              //(subList[item])[i],
               // Dismissible(
               //   key: ValueKey(UniqueKey().toString()) ,
               //   child: (subList[item])[i] ,                
@@ -126,19 +126,19 @@ class MyForumState extends State<MyForum>{
            ],
            );
         },
-        itemCount: subList[item].length+1,
+        itemCount: sublist.length+1,
       );
   }
   Widget _mainList(){
       return ListView.builder(
         itemBuilder: (context,i){
-          if(items.length == i){
+          if(itemList.length == i){
             //print("boop");
             return null;
           }
             return _body(i);
         },
-        itemCount: items.length+1,
+        itemCount: itemList.length+1,
       );
   } 
 
@@ -146,21 +146,35 @@ class MyForumState extends State<MyForum>{
 
 class Calculations{
 
-  List<ItemField> items;
-  Map<ItemField,List<UserField>> subList;
-  Calculations(this.items,this.subList);
-
+  List<itemData> itemList;
+  Calculations(this.itemList);
   void calculate(){
-      for (var item in items) {
-        int userCount = subList[item].length;
+      double tax = 0.0;
+      if(itemList.last.item.text == "tax"){
+          if(itemList.last.price.text != null && itemList.last.price.text !=""){
+              tax = double.parse(itemList.last.price.text);
+          }           
+        }
+
+      for (var item in itemList) {
+        if(item.subList.isEmpty){
+          return;
+        }
+        int userCount = item.subList.length;
+        tax = tax/userCount;
         if(item.price.text == null || item.price.text == ""){
           return;
         }
-        var price = double.parse(item.price.text)/userCount;
-        //item.item.text = "ha";
-        for (var user in subList[item]) {
-           // user = new UserField(user: user.user,price: user.price,);
-             user.price.text = price.toString();
+        //print("${item.price.text}");  
+        var price;
+        try{
+         price = double.parse(item.price.text)/userCount;
+        }on FormatException{
+          return;
+        }
+        price = price + tax;
+        for (var user in item.subList) {
+           user.price = price.toStringAsFixed(2);
         }
       }
   }  

@@ -6,7 +6,8 @@ import 'package:breadslice/widgets/itemField.dart';
 
 class UserField extends StatelessWidget {
 
-  final TextEditingController price;
+  //final TextEditingController price;
+  final String price;
   final TextEditingController user;
   UserField({
   this.price,
@@ -83,11 +84,11 @@ class UserField extends StatelessWidget {
   }
   Widget _price(){
     String p;
-    if(price == null || price.text == null){
-      p="";
-    }else{
-      p=price.text;
-    }
+    // if(price == null || price.text == null){
+    //   p="";
+    // }else{
+    //   p=price.text;
+    // }
     return Container(
           alignment: Alignment.center,
           constraints: BoxConstraints(
@@ -97,14 +98,20 @@ class UserField extends StatelessWidget {
             maxHeight: 30,
         ),
           color: Color(0xFF770732),
-          child: TextField(
-              controller: price,
-              enabled: false,
+          child: Text(price,
               style: TextStyle(
-              color: Colors.white
-            ),
-            decoration: null
-          )
+                fontSize: 16,
+                color: Colors.white
+              ),
+            )
+          //   TextField(
+          //     controller: price,
+          //     enabled: false,
+          //     style: TextStyle(
+          //     color: Colors.white
+          //   ),
+          //   decoration: null
+          // )
           );
   }
 
