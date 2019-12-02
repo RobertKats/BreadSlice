@@ -18,18 +18,7 @@ class UserField extends StatelessWidget {
   Widget build(BuildContext context) {
     return _userBox();
   }
-  Widget _temp(){
-    return Center(
-      child: Column(
-          children: <Widget>[
-            Padding(padding: EdgeInsets.all(5),),
-            ItemField(),
-            Padding(padding: EdgeInsets.all(1),),
-             _userBox(),
-          ],
-      ),
-    );
-  }
+
  Widget _userBox(){
       return Container(
         constraints: BoxConstraints(
@@ -83,14 +72,8 @@ class UserField extends StatelessWidget {
 
   }
   Widget _price(){
-    String p;
-    // if(price == null || price.text == null){
-    //   p="";
-    // }else{
-    //   p=price.text;
-    // }
     return Container(
-          alignment: Alignment.center,
+         alignment: Alignment.center,
           constraints: BoxConstraints(
             maxWidth: 70,
             minWidth: 70,
@@ -98,20 +81,12 @@ class UserField extends StatelessWidget {
             maxHeight: 30,
         ),
           color: Color(0xFF770732),
-          child: Text(price,
+          child: Text((( price == null) ? "" : price),
               style: TextStyle(
                 fontSize: 16,
                 color: Colors.white
               ),
             )
-          //   TextField(
-          //     controller: price,
-          //     enabled: false,
-          //     style: TextStyle(
-          //     color: Colors.white
-          //   ),
-          //   decoration: null
-          // )
           );
   }
 

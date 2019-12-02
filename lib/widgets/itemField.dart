@@ -8,15 +8,24 @@ import 'package:flutter/material.dart';
 class ItemField extends StatelessWidget {
 
     final TextEditingController item;
+    final bool readOnlyItem;
     final TextEditingController price;
+    final bool readOnlyPrice;
+    final BoxConstraints constraints;
+    final Color color;
     ItemField({
-      this.item, 
-      this.price
+      this.item,
+      this.readOnlyItem = false,
+      this.price,
+      this.readOnlyPrice = false,
+      this.constraints = const BoxConstraints( 
+            maxWidth: 380,
+            minWidth: 380,
+            minHeight: 40,
+            maxHeight: 40,),
+      this.color = const Color(0xFF770732),
       });
-      //assert(item != null),
-    //  assert(price != null);
-     // item = new TextEditingController(),
-      //price = new TextEditingController();
+
 
   @override
   Widget build(BuildContext context) {
@@ -24,14 +33,9 @@ class ItemField extends StatelessWidget {
   }
   Widget _fip(){
       return Container(
-        constraints: BoxConstraints(
-            maxWidth: 380,
-            minWidth: 380,
-            minHeight: 40,
-            maxHeight: 40,
-        ),
+        constraints: constraints,
         decoration: BoxDecoration(
-          color: Color(0xFF770732),
+          color: color,
           borderRadius: BorderRadius.all(Radius.circular(10)),
           //border: Border.all(),
         ),
@@ -61,8 +65,9 @@ class ItemField extends StatelessWidget {
             minHeight: 30,
             maxHeight: 30,
         ),
-      color: Color(0xFF770732),
+     // color: Colors.red,//Color(0xFF770732),
       child: TextField(
+        readOnly: readOnlyItem,
         controller: item,
         style: TextStyle(
           color: Colors.white
@@ -75,7 +80,6 @@ class ItemField extends StatelessWidget {
   }
    Widget _price(){
     return Flexible(
-      
         child: Container(
           alignment: Alignment.center,
           constraints: BoxConstraints(
@@ -84,8 +88,9 @@ class ItemField extends StatelessWidget {
             minHeight: 30,
             maxHeight: 30,
         ),
-          color: Color(0xFF770732),
+          //color: Colors.red,//Color(0xFF770732),
           child: TextField(
+            readOnly: readOnlyPrice,
             controller: price,
             keyboardType: TextInputType.number,
             style: TextStyle(
@@ -102,19 +107,4 @@ class ItemField extends StatelessWidget {
   }
 
 
-}
-
-
-class Design extends StatelessWidget{
-    
-  final Widget testingWidget;
-  @override
-  Design({this.testingWidget});
-  Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: new AppBar(),
-        backgroundColor: Colors.red,
-        body:  testingWidget,
-    );
-  }
 }

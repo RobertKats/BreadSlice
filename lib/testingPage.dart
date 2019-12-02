@@ -20,7 +20,7 @@ class Router extends StatelessWidget{
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           _myButton(context, "ForumPage","/forum"),
-          _myButton(context, "ItemDesign","/ItemField")
+          _myButton(context, "ItemDesign","/Design")
         ],
       );
   }

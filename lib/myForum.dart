@@ -1,17 +1,24 @@
+import 'package:breadslice/widgets/TotalField.dart';
 import 'package:flutter/material.dart';
 import 'package:breadslice/widgets/itemField.dart';
 import 'package:breadslice/widgets/userField.dart';
 
 
-class userData{
+class UserData{
   TextEditingController user = new TextEditingController();
   String price="";
   
 }
-class itemData{
+class ItemData{
   TextEditingController item = new TextEditingController();
   TextEditingController price = new TextEditingController();
-  List<userData> subList = new List<userData>();
+  List<UserData> subList = new List<UserData>();
+}
+class TotalData{
+    TextEditingController total = new TextEditingController();
+    TextEditingController tax = new TextEditingController();
+    TextEditingController tip = new TextEditingController();
+    TextEditingController delivery = new TextEditingController();
 }
 
 class MyForum extends StatefulWidget{
@@ -21,21 +28,22 @@ class MyForum extends StatefulWidget{
 }
 class MyForumState extends State<MyForum>{
 
-  List<itemData> itemList = new List<itemData>();
+  List<ItemData> itemList = new List<ItemData>();
+  TotalData totalData = new TotalData();
   @override
   void initState() {
-    itemList.add(itemData());
+    itemList.add(ItemData());
     super.initState();
   }
   void _update(){
-        Calculations(itemList).calculate();
+        Calculations(itemList,totalData).calculate();
         // setState(() {
           
         // });
   }
   @override
   Widget build(BuildContext context) {
-    print("update");
+    //print("update");
     _update();
     //_update();
     return Scaffold(
@@ -53,7 +61,7 @@ class MyForumState extends State<MyForum>{
       body: _mainList(),
       floatingActionButton: FloatingActionButton(
         onPressed: (){
-          itemList.add(itemData());
+          itemList.add(ItemData());
           setState(() {       
           });
         },
@@ -67,16 +75,16 @@ class MyForumState extends State<MyForum>{
           Padding( padding: EdgeInsets.all(2),),
           Center(child: ItemField(item: itemList[i].item ,price:itemList[i].price ,),),
           Padding( padding: EdgeInsets.all(2),),
-          Center (child:_subList(itemList[i].subList),)
+          Center (child:_subList(itemList[i]),)
         ],
     );
   }
-  Widget _subList(List<userData> sublist){
+  Widget _subList(ItemData item){
       return ListView.builder(
         shrinkWrap: true,
         physics: ClampingScrollPhysics(),
         itemBuilder:(context,i){
-          if( sublist.length== i){
+          if( item.subList.length== i){
             return Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
@@ -84,8 +92,11 @@ class MyForumState extends State<MyForum>{
                   shape: CircleBorder(),
                   child: Icon(Icons.remove),
                   onPressed: (){
-                    if(sublist.length != 0)
-                      sublist.removeLast();
+                    if(item.subList.length != 0)
+                      item.subList.removeLast();
+                    else if(itemList.length !=1){
+                      itemList.remove(item);
+                    }
                      // sublist[item].removeLast();
                       setState(() { });
                   },
@@ -95,7 +106,7 @@ class MyForumState extends State<MyForum>{
                   shape: CircleBorder(),
                   child: Icon(Icons.add),
                   onPressed: (){
-                      sublist.add(userData());
+                      item.subList.add(UserData());
                       setState(() { });
                   },
                 ),
@@ -107,7 +118,7 @@ class MyForumState extends State<MyForum>{
            
            children: <Widget>[
               Padding( padding: EdgeInsets.all(1),),
-                UserField(user: sublist[i].user ,price: sublist[i].price,)
+                UserField(user: item.subList[i].user ,price: item.subList[i].price,)
               //(subList[item])[i],
               // Dismissible(
               //   key: ValueKey(UniqueKey().toString()) ,
@@ -126,15 +137,23 @@ class MyForumState extends State<MyForum>{
            ],
            );
         },
-        itemCount: sublist.length+1,
+        itemCount: item.subList.length+1,
       );
   }
   Widget _mainList(){
       return ListView.builder(
         itemBuilder: (context,i){
           if(itemList.length == i){
-            //print("boop");
-            return null;
+           
+            return Padding(
+              padding: EdgeInsets.only(top: 15,bottom: 100),
+              child: TotalField(
+                total: totalData.total,
+                tax: totalData.tax,
+                tip: totalData.tip,
+                delivery: totalData.delivery,
+              ),
+              );
           }
             return _body(i);
         },
@@ -146,37 +165,87 @@ class MyForumState extends State<MyForum>{
 
 class Calculations{
 
-  List<itemData> itemList;
-  Calculations(this.itemList);
-  void calculate(){
-      double tax = 0.0;
-      if(itemList.last.item.text == "tax"){
-          if(itemList.last.price.text != null && itemList.last.price.text !=""){
-              tax = double.parse(itemList.last.price.text);
-          }           
+  List<ItemData> itemList;
+  TotalData totalData;
+  Calculations(this.itemList,this.totalData);
+
+  double _getTaxPer(double subTotal){
+    if(subTotal <= 0){
+      return 0;
+    }
+    double tax;
+    try{
+        tax = double.parse(totalData.tax.text);
+    }on FormatException{
+          return 0;
+    }
+    return tax/subTotal;
+  }
+  
+  double _getSubTotal(){
+      double subTotal = 0;
+      for (var item in itemList) {
+        if(item.price.text == null || item.price.text == ""){
+        continue;
         }
+        subTotal += _textToDouble(item.price);
+       }
+       return subTotal;
+  }
+  double _textToDouble(TextEditingController a){
+      double out = 0;
+      try{
+         out = double.parse(a.text);
+        }on FormatException{
+          a.text = "";
+          return 0;
+        }
+      return out;
+  }
+  int _getTotalUserCount(){
+        int totalUserCount = 0;
+          for (var item in itemList) {            
+           totalUserCount += item.subList.length;
+          }
+          return totalUserCount;
+      }
+  void calculate(){
+    print("cal");
+      double subTotal = _getSubTotal();
+      double tax = _getTaxPer(subTotal);
+      double trueTotal = 0;
+      int totalUserCount = _getTotalUserCount();
+      print("tot: $subTotal, Tax: $tax");
 
       for (var item in itemList) {
         if(item.subList.isEmpty){
-          return;
+          continue;
         }
         int userCount = item.subList.length;
-        tax = tax/userCount;
         if(item.price.text == null || item.price.text == ""){
           return;
         }
         //print("${item.price.text}");  
-        var price;
-        try{
-         price = double.parse(item.price.text)/userCount;
-        }on FormatException{
-          return;
+        double price = _textToDouble(item.price);
+        
+        double userPrice;
+        
+        userPrice = price/userCount;
+        userPrice += (userPrice * tax);
+        if(totalUserCount != 0){
+            print("t: $totalUserCount");
+           userPrice +=  _textToDouble(totalData.tip)/totalUserCount;
+           userPrice +=  _textToDouble(totalData.delivery)/totalUserCount;
         }
-        price = price + tax;
-        for (var user in item.subList) {
-           user.price = price.toStringAsFixed(2);
+        //print(" ${item.item.text} :   $userPrice");
+        for (var user in item.subList) {    
+          user.price =  userPrice.toStringAsFixed(2);
+          trueTotal += userPrice;
         }
       }
+      
+      totalData.total.text = trueTotal.toStringAsFixed(2);
+
   }  
 
 }
