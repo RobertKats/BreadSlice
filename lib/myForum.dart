@@ -1,7 +1,9 @@
 import 'package:breadslice/widgets/TotalField.dart';
+import 'package:breadslice/widgets/userSummary.dart';
 import 'package:flutter/material.dart';
 import 'package:breadslice/widgets/itemField.dart';
 import 'package:breadslice/widgets/userField.dart';
+import 'package:breadslice/summary.dart';
 
 
 class UserData{
@@ -19,6 +21,7 @@ class TotalData{
     TextEditingController tax = new TextEditingController();
     TextEditingController tip = new TextEditingController();
     TextEditingController delivery = new TextEditingController();
+    String subTotal;
 }
 
 class MyForum extends StatefulWidget{
@@ -30,13 +33,16 @@ class MyForumState extends State<MyForum>{
 
   List<ItemData> itemList = new List<ItemData>();
   TotalData totalData = new TotalData();
+   //List<Users> users = new List<Users>();
+   Map<String,double> users = new Map<String,double>();
+
   @override
   void initState() {
     itemList.add(ItemData());
     super.initState();
   }
   void _update(){
-        Calculations(itemList,totalData).calculate();
+        Calculations(itemList,totalData,users).calculate();
         // setState(() {
           
         // });
@@ -52,8 +58,11 @@ class MyForumState extends State<MyForum>{
           IconButton(
             icon: Icon(Icons.ac_unit),
             onPressed: (){
-                _update();
-                setState(() {});
+                Navigator.push(context, MaterialPageRoute(
+                  builder: (context) => Summary(users: users, totalData: totalData,),
+                ));
+                //_update();
+                //setState(() {});
             },
           ),
         ],
@@ -167,7 +176,9 @@ class Calculations{
 
   List<ItemData> itemList;
   TotalData totalData;
-  Calculations(this.itemList,this.totalData);
+  Map<String,double> users;
+
+  Calculations(this.itemList,this.totalData,this.users);
 
   double _getTaxPer(double subTotal){
     if(subTotal <= 0){
@@ -210,12 +221,16 @@ class Calculations{
           return totalUserCount;
       }
   void calculate(){
+    users.clear();
+   //users = new Map<String,double>();
+   
     print("cal");
       double subTotal = _getSubTotal();
+      totalData.subTotal = subTotal.toStringAsFixed(2);
       double tax = _getTaxPer(subTotal);
       double trueTotal = 0;
       int totalUserCount = _getTotalUserCount();
-      print("tot: $subTotal, Tax: $tax");
+      //print("tot: $subTotal, Tax: $tax");
 
       for (var item in itemList) {
         if(item.subList.isEmpty){
@@ -233,13 +248,16 @@ class Calculations{
         userPrice = price/userCount;
         userPrice += (userPrice * tax);
         if(totalUserCount != 0){
-            print("t: $totalUserCount");
+            //print("t: $totalUserCount");
            userPrice +=  _textToDouble(totalData.tip)/totalUserCount;
            userPrice +=  _textToDouble(totalData.delivery)/totalUserCount;
         }
         //print(" ${item.item.text} :   $userPrice");
-        for (var user in item.subList) {    
+        for (var user in item.subList) {   
+         // print("${user.user.text}: ${user.price}");
           user.price =  userPrice.toStringAsFixed(2);
+          if( users[user.user.text] == null) users[user.user.text] = userPrice;
+          else users[user.user.text] += userPrice; 
           trueTotal += userPrice;
         }
       }

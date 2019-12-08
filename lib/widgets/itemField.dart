@@ -92,7 +92,7 @@ class ItemField extends StatelessWidget {
           child: TextField(
             readOnly: readOnlyPrice,
             controller: price,
-            keyboardType: TextInputType.number,
+            keyboardType: TextInputType.numberWithOptions(decimal: true),
             style: TextStyle(
              color: Colors.white
               ),

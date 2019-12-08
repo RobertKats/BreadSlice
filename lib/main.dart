@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:breadslice/Design.dart';
 import 'package:breadslice/testingPage.dart';
 import 'package:breadslice/myForum.dart';
+import 'package:breadslice/summary.dart';
+
 
 void main() => runApp(MyApp());
 
@@ -11,11 +13,13 @@ class MyApp extends StatelessWidget {
     '/': (BuildContext context) => new Router(),
     '/Design': (BuildContext context) => new Design(),
     '/forum': (BuildContext context) => new MyForum(),
+    '/summary': (BuildContext context) => new Summary(),
   };
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
       return MaterialApp(
+          debugShowCheckedModeBanner: false,
           routes: routes,
           title: 'IOU',
           //theme: ThemeData(
