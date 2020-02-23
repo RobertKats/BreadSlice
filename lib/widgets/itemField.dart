@@ -71,8 +71,17 @@ class ItemField extends StatelessWidget {
         controller: item,
         style: TextStyle(
           color: Colors.white
+          
         ),
-        decoration: null
+        decoration: InputDecoration(
+              border: InputBorder.none, 
+              isDense: true,
+              hintText: 'Item',
+              hintStyle: TextStyle(
+                color: Colors.grey,
+                inherit: false,
+              )
+            )
       ),
     )
     );
@@ -99,7 +108,11 @@ class ItemField extends StatelessWidget {
             decoration: InputDecoration(
               border: InputBorder.none, 
               isDense: true,
-              //labelText: "Item"
+              hintText: 'Cost',
+              hintStyle: TextStyle(
+                color: Colors.grey,
+                inherit: false,
+              )
             )
           ),
           ),

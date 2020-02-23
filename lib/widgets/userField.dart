@@ -65,7 +65,15 @@ class UserField extends StatelessWidget {
             style: TextStyle(
               color: Colors.white
             ),
-            decoration: null
+            decoration: InputDecoration(
+              border: InputBorder.none, 
+              isDense: true,
+              hintText: 'User',
+              hintStyle: TextStyle(
+                color: Colors.grey,
+                inherit: false,
+              )
+            )
           ),
         )
         );

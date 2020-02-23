@@ -38,7 +38,9 @@ class MyForumState extends State<MyForum>{
 
   @override
   void initState() {
-    itemList.add(ItemData());
+    var _data = ItemData();
+    _data.subList.add(UserData());
+    itemList.add(_data);
     super.initState();
   }
   void _update(){
@@ -54,13 +56,21 @@ class MyForumState extends State<MyForum>{
     //_update();
     return Scaffold(
       appBar: AppBar(
+        title: Text("IOU",
+          ),
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.ac_unit),
+            icon: Icon(Icons.add),
             onPressed: (){
-                Navigator.push(context, MaterialPageRoute(
-                  builder: (context) => Summary(users: users, totalData: totalData,),
-                ));
+                var _data = ItemData();
+                _data.subList.add(UserData());
+                itemList.add( _data);
+                
+                setState(() {       
+                });
+                // Navigator.push(context, MaterialPageRoute(
+                //   builder: (context) => Summary(users: users, totalData: totalData,),
+                // ));
                 //_update();
                 //setState(() {});
             },
@@ -70,9 +80,10 @@ class MyForumState extends State<MyForum>{
       body: _mainList(),
       floatingActionButton: FloatingActionButton(
         onPressed: (){
-          itemList.add(ItemData());
-          setState(() {       
-          });
+           Navigator.push(context, MaterialPageRoute(
+                  builder: (context) => Summary(users: users, totalData: totalData,),
+                ));
+        
         },
         ),
     );
@@ -101,9 +112,9 @@ class MyForumState extends State<MyForum>{
                   shape: CircleBorder(),
                   child: Icon(Icons.remove),
                   onPressed: (){
-                    if(item.subList.length != 0)
-                      item.subList.removeLast();
-                    else if(itemList.length !=1){
+                    if(item.subList.length > 1)
+                      item.subList.removeLast();                    
+                    else if(itemList.length > 1){
                       itemList.remove(item);
                     }
                      // sublist[item].removeLast();
@@ -220,6 +231,8 @@ class Calculations{
           }
           return totalUserCount;
       }
+
+
   void calculate(){
     users.clear();
    //users = new Map<String,double>();
@@ -242,7 +255,7 @@ class Calculations{
         }
         //print("${item.price.text}");  
         double price = _textToDouble(item.price);
-        
+        print(price);
         double userPrice;
         
         userPrice = price/userCount;
@@ -263,7 +276,10 @@ class Calculations{
       }
       
       totalData.total.text = trueTotal.toStringAsFixed(2);
-
-  }  
+      totalData.tax.text = _textToDouble(totalData.tax).toStringAsFixed(2);
+      totalData.tip.text = _textToDouble(totalData.tip).toStringAsFixed(2);
+      totalData.delivery.text = _textToDouble(totalData.delivery).toStringAsFixed(2);
+  }
+  
 
 }
