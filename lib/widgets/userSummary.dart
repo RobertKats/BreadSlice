@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import "package:breadslice/myForum.dart";
 
@@ -28,13 +29,20 @@ class UserSummary extends StatelessWidget{
           borderRadius: BorderRadius.all(Radius.circular(10)),
           //border: Border.all(),
         ),
-        child: _summery(),
+        child: Container(
+            child: _summery(),
+               constraints: BoxConstraints(
+                      maxWidth: 260,
+                      //minHeight: 400,
+                      maxHeight: 400,
+              ),
+            ),
       );
   }
   Widget _summery(){
     List<String> userNames = users.keys.toList();
       return ListView.builder(
-        shrinkWrap: true,
+        shrinkWrap: true, 
         itemBuilder: (context,i){
           if(i==0) return Padding(padding: EdgeInsets.only(top: 10),
             child: _userSum(userNames[i],users[userNames[i]]),

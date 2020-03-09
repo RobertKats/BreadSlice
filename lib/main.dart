@@ -24,9 +24,12 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           routes: routes,
           title: 'IOU',
-          //theme: ThemeData(
-
-          //),
+          theme: ThemeData(
+              //canvasColor: Color(0x00D4E9F0),
+              primaryColor: Color(0xFF770732),
+              accentColor: Color(0xFF770732),
+          ),              
+          
       );
     
 

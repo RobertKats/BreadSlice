@@ -17,8 +17,10 @@ class Summary extends StatelessWidget{
             appBar: new AppBar(),
            // backgroundColor: Colors.red,
             body:  Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Flexible(
+                Container(
                     child:UserSummary(users) ,
                 ),
                   
