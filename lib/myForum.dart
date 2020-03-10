@@ -58,31 +58,25 @@ class MyForumState extends State<MyForum>{
       appBar: AppBar(
         title: Text("IOU",
           ),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.add),
-            onPressed: (){
-                var _data = ItemData();
-                _data.subList.add(UserData());
-                itemList.add( _data);
-                
-                setState(() {       
-                });
-                // Navigator.push(context, MaterialPageRoute(
-                //   builder: (context) => Summary(users: users, totalData: totalData,),
-                // ));
-                //_update();
-                //setState(() {});
-            },
-          ),
-        ],
+        // actions: <Widget>[
+        //   IconButton(
+        //     icon: Icon(Icons.add),
+        //     onPressed: (){
+
+        //     },
+        //   ),
+        // ],
       ),
       body: _mainList(),
       floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
         onPressed: (){
-           Navigator.push(context, MaterialPageRoute(
-                  builder: (context) => Summary(users: users, totalData: totalData,),
-                ));
+                _update();
+                var _data = ItemData();
+                _data.subList.add(UserData());
+                itemList.add( _data);                
+                setState(() {       
+                });
         
         },
         ),
@@ -165,21 +159,56 @@ class MyForumState extends State<MyForum>{
         itemBuilder: (context,i){
           if(itemList.length == i){
            
-            return Padding(
-              padding: EdgeInsets.only(top: 15,bottom: 100),
-              child: TotalField(
-                total: totalData.total,
-                tax: totalData.tax,
-                tip: totalData.tip,
-                delivery: totalData.delivery,
-              ),
-              );
+            return _costDataAndDoneButton();
           }
             return _body(i);
         },
         itemCount: itemList.length+1,
       );
   } 
+
+  Widget _costDataAndDoneButton(){
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+             Padding(
+              padding: EdgeInsets.only(top: 15,bottom: 15),
+              child: TotalField(
+                total: totalData.total,
+                tax: totalData.tax,
+                tip: totalData.tip,
+                delivery: totalData.delivery,
+               ),
+              ),
+          Padding(
+            padding: EdgeInsets.only(top: 15,bottom: 100),
+            child: RawMaterialButton(
+              fillColor: Theme.of(context).buttonColor,
+              child: Text("Done",
+                  style: TextStyle(
+                  fontSize: 18
+                ),
+              ),
+              constraints: BoxConstraints(
+                minHeight: 40,
+                minWidth: 200
+              ),
+              shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                       ),
+                    
+              onPressed: (){
+                            Navigator.push(context, MaterialPageRoute(
+                            builder: (context) => Summary(users: users, totalData: totalData,),
+                            ));        
+                            },
+              
+
+              ),
+            ),
+        ],
+      );
+  }
 
 }
 
