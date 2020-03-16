@@ -4,25 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:breadslice/widgets/itemField.dart';
 import 'package:breadslice/widgets/userField.dart';
 import 'package:breadslice/summary.dart';
+import 'package:breadslice/SaveingData.dart';
+import 'package:breadslice/SavePage.dart';
 
 
-class UserData{
-  TextEditingController user = new TextEditingController();
-  String price="";
-  
-}
-class ItemData{
-  TextEditingController item = new TextEditingController();
-  TextEditingController price = new TextEditingController();
-  List<UserData> subList = new List<UserData>();
-}
-class TotalData{
-    TextEditingController total = new TextEditingController();
-    TextEditingController tax = new TextEditingController();
-    TextEditingController tip = new TextEditingController();
-    TextEditingController delivery = new TextEditingController();
-    String subTotal;
-}
 
 class MyForum extends StatefulWidget{
   @override
@@ -55,17 +40,38 @@ class MyForumState extends State<MyForum>{
     _update();
     //_update();
     return Scaffold(
+      drawer: Drawer(
+        child: Container(
+          alignment: Alignment.center,
+          child: FlatButton(
+            color: Colors.red,
+            child: Text("Save Page"),
+            onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(
+                            builder: (context) => SavedPage(),
+                            ));
+            },
+            ),
+          ),
+      ),
       appBar: AppBar(
         title: Text("IOU",
           ),
-        // actions: <Widget>[
-        //   IconButton(
-        //     icon: Icon(Icons.add),
-        //     onPressed: (){
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.save),
+            onPressed: (){
+                //SaveingData().test(itemList);
+                
+                SaveingData.loadData().then((d){
+                  itemList = d;
+                  setState(() {              
+                  });
+                });
 
-        //     },
-        //   ),
-        // ],
+            },
+          ),
+        ],
       ),
       body: _mainList(),
       floatingActionButton: FloatingActionButton(

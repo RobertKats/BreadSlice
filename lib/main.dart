@@ -1,4 +1,5 @@
 
+import 'package:breadslice/magic.dart';
 import 'package:flutter/material.dart';
 import 'package:breadslice/Design.dart';
 import 'package:breadslice/testingPage.dart';
@@ -8,6 +9,11 @@ import 'package:breadslice/finance/financePage.dart';
 
 
 void main() => runApp(MyApp());
+// void main(){
+//     Magic.createDbFolder();
+//     print("app startup");
+//     runApp(MyApp());
+// }
 
 class MyApp extends StatelessWidget {
   final routes = <String, WidgetBuilder>{
