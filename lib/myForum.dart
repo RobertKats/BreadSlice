@@ -1,3 +1,4 @@
+import 'package:breadslice/magic.dart';
 import 'package:breadslice/widgets/TotalField.dart';
 import 'package:breadslice/widgets/userSummary.dart';
 import 'package:flutter/material.dart';
@@ -47,9 +48,11 @@ class MyForumState extends State<MyForum>{
             color: Colors.red,
             child: Text("Save Page"),
             onPressed: () {
+                Navigator.pop(context);
                   Navigator.push(context, MaterialPageRoute(
                             builder: (context) => SavedPage(),
                             ));
+                  
             },
             ),
           ),

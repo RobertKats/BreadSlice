@@ -12,9 +12,14 @@ class SavedPage extends StatefulWidget{
 class SavePageState extends State<SavedPage>{
 
     List<String> saves;
+    String dbPath;
 
   @override
-  void initState() {
+  void initState() { 
+
+    Magic.localDbDir.then((path){
+      dbPath = path.path;
+    });
     Magic.dbFileList().then((list){
       saves = list;
       setState(() {});
@@ -36,13 +41,20 @@ class SavePageState extends State<SavedPage>{
         if(saves == null) return Text("loading");
         else return _list();
     }
-    Widget _list(){
+    Widget _list(){ 
         return ListView.builder(
           itemBuilder: (context,i){
-            return new Text(saves[i]);
+            return _myButton(saves[i]);
           },
           itemCount: saves.length,
           );
+    }
+    Widget _myButton(String fullPath)      
+      String file = fullPath.replaceFirst(dePath, "");
+          
+      return FlatButton(
+        onPressed: null, 
+        child: new Text(file));
     }
 
 }
