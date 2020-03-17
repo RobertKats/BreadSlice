@@ -11,16 +11,24 @@ import 'package:breadslice/SavePage.dart';
 
 
 class MyForum extends StatefulWidget{
+  final List<ItemData> itemList;
+  MyForum({List<ItemData> itemList}):
+    itemList = itemList ?? new List<ItemData>();
   @override
-  State<StatefulWidget> createState() => MyForumState();
+  State<StatefulWidget> createState() => MyForumState(this.itemList);
 
 }
 class MyForumState extends State<MyForum>{
+  List<ItemData> itemList;
+  TextEditingController saveFile;
+  TotalData totalData;
+  Map<String,double> users;
 
-  List<ItemData> itemList = new List<ItemData>();
-  TotalData totalData = new TotalData();
-   //List<Users> users = new List<Users>();
-   Map<String,double> users = new Map<String,double>();
+  MyForumState(List<ItemData> itemList):
+  this.itemList = itemList,
+  this.saveFile = new TextEditingController(),
+  this.totalData = new TotalData(),
+  this.users = new Map<String,double>();
 
   @override
   void initState() {
@@ -65,12 +73,12 @@ class MyForumState extends State<MyForum>{
             icon: Icon(Icons.save),
             onPressed: (){
                 //SaveingData().test(itemList);
-                
-                SaveingData.loadData().then((d){
-                  itemList = d;
-                  setState(() {              
-                  });
-                });
+                _displayDialog(context);
+                //  SaveingData.loadData().then((d){
+                //   itemList = d;
+                //   setState(() {              
+                //   });
+                // });
 
             },
           ),
@@ -90,6 +98,41 @@ class MyForumState extends State<MyForum>{
         },
         ),
     );
+  }
+
+
+   _displayDialog(BuildContext context) async {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('Enter a save name'),
+            content: TextField(
+              controller: saveFile,
+              decoration: InputDecoration(hintText: "Savename"),
+            ),
+            actions: <Widget>[
+              new FlatButton(
+                //NOTE: make this better
+                padding: EdgeInsets.fromLTRB(0, 0, 100, 0),
+                onPressed: (){
+                  if(saveFile.text == "" || saveFile.text == null) Navigator.of(context).pop();
+                  print(saveFile.text);
+                  SaveingData.saveData(itemList,saveFile.text);
+                  saveFile.text = "";
+                  Navigator.of(context).pop();
+                }, 
+                child: Text("Save")
+                ),
+              new FlatButton(
+                child: Text('CANCEL'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              )
+            ],
+          );
+        });
   }
 
   Widget _body(int i){

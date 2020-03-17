@@ -75,7 +75,8 @@ class Magic{
     static Future<List<String>> dbFileList() async {
     var myList = new List<String>();
     var dir = await localDbDir;
-    if(await dir.exists()) return null;
+    if(! await dir.exists()) return null;
+    
     var lister = dir.list(recursive: false);
     await for (var file in lister) {
       myList.add(file.path);

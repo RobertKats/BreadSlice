@@ -42,16 +42,16 @@ class SaveingData{
         //saveData(a);
       }
 
-      void saveData(List<ItemData> itemList) async{
+      static void saveData(List<ItemData> itemList,String fileName) async{
         String data = ItemDataList.itemDataListToJson(itemList);
-        Magic.createDbFolder();       
-        await Magic.writeData(data, "test",type: "db");
+        await Magic.createDbFolder();       
+        await Magic.writeData(data, fileName,type: "db");
         var a = await Magic.dbFileList();
         a.forEach(print);
         print("data writen");
       }
-      static Future<List<ItemData>> loadData() async{
-          String data = await Magic.readData("test",type:"db");
+      static Future<List<ItemData>> loadData(String file) async{
+          String data = await Magic.readData(file,type:"db");
           var out = ItemDataList.itemDataListFromJson(data).itemData;
           return out;
       }

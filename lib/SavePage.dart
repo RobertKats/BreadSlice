@@ -1,3 +1,4 @@
+import 'package:breadslice/myForum.dart';
 import 'package:flutter/material.dart';
 import 'package:breadslice/SaveingData.dart';
 import 'package:breadslice/magic.dart';
@@ -49,11 +50,17 @@ class SavePageState extends State<SavedPage>{
           itemCount: saves.length,
           );
     }
-    Widget _myButton(String fullPath)      
-      String file = fullPath.replaceFirst(dePath, "");
-          
+    Widget _myButton(String fullPath){    
+      String file = fullPath.replaceRange(0, dbPath.length+1,"");//fullPath.replaceAll(dbPath, "");
       return FlatButton(
-        onPressed: null, 
+        onPressed: ()async{
+            var list = await SaveingData.loadData(file);//Magic.readData(file,type:"db");
+            
+            Navigator.push(context, MaterialPageRoute(
+                            builder: (context) =>MyForum(itemList: list,),
+                            ));
+
+        }, 
         child: new Text(file));
     }
 
