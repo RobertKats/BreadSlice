@@ -13,9 +13,13 @@ import 'package:breadslice/SavePage.dart';
 class HomePage extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
-      return Scaffold(
+
       
-      body: MyForum(),
-    );
+      return WillPopScope(
+        child: Scaffold(
+            body: MyForum(),
+          ),
+        onWillPop: () async => false,
+         );
   }
 }

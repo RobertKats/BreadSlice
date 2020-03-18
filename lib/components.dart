@@ -21,15 +21,31 @@ class MyComponents{
       );
   }
 
-  static Widget myDrawer(Function onSavePressed){
+  static Widget myDrawer(BuildContext context){
     return Drawer(
         child: Container(
           alignment: Alignment.center,
-          child: FlatButton(
-            color: Colors.red,
-            child: Text("Save Page"),
-            onPressed: onSavePressed,
-            ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+                FlatButton(
+                  color: Colors.red,
+                  child: Text("IOU Builder"),
+                  onPressed: (){
+                    Navigator.pushReplacementNamed(context,"/");
+                  },
+                  ),
+                  FlatButton(
+                  color: Colors.red,
+                  child: Text("Save Page"),
+                  onPressed: (){
+                      Navigator.pushReplacementNamed(context,"/savePage");
+                  },
+                  ),
+                
+                  
+            ],
+          ),
           ),
       );
   }

@@ -53,11 +53,7 @@ class MyForumState extends State<MyForum>{
       appBar: MyComponents.myAppBar((){
             _displayDialog(context);
       }) ,
-      drawer: MyComponents.myDrawer((){
-              Navigator.push(context, MaterialPageRoute(
-                            builder: (context) => SavedPage(),
-                            ));
-      }),
+      drawer: MyComponents.myDrawer(context),
       body: _mainList(),
       floatingActionButton: FloatingActionButton(
        child: Icon(Icons.add),

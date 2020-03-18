@@ -31,13 +31,19 @@ class SavePageState extends State<SavedPage>{
 
     @override
     Widget build(BuildContext context) {
-      return Scaffold(
-        appBar:AppBar(),
-          body: Container(
-              alignment: Alignment.center,
-              child: _myBody()
-          ) ,
-      );
+      return WillPopScope(child: Scaffold(
+                            drawer: MyComponents.myDrawer(context),
+                            appBar:AppBar(
+                              leading: null,
+                              title: Text("Save Page"),
+                            ),
+                              body: Container(
+                                  alignment: Alignment.center,
+                                  child: _myBody()
+                              ) ,
+                          ), 
+              onWillPop: () async =>Navigator.canPop(context), // can I pop this route ?
+              );
     }
 
     Widget _myBody(){

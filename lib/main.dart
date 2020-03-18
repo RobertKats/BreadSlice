@@ -1,4 +1,5 @@
 
+import 'package:breadslice/SavePage.dart';
 import 'package:breadslice/magic.dart';
 import 'package:flutter/material.dart';
 import 'package:breadslice/Design.dart';
@@ -19,9 +20,10 @@ void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   final routes = <String, WidgetBuilder>{
-    '/forum': (BuildContext context) => new Router(),
+    '/Router': (BuildContext context) => new Router(),
     '/Design': (BuildContext context) => new Design(),
     '/': (BuildContext context) => new HomePage(),
+    '/savePage':(BuildContext context) => new SavedPage(),
     '/summary': (BuildContext context) => new Summary(),
     '/Fina': (BuildContext context) => new FinancePage(),
   };
