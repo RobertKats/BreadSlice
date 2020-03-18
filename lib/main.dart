@@ -6,6 +6,8 @@ import 'package:breadslice/testingPage.dart';
 import 'package:breadslice/myForum.dart';
 import 'package:breadslice/summary.dart';
 import 'package:breadslice/finance/financePage.dart';
+import 'package:breadslice/finance/financePage.dart';
+import 'package:breadslice/homePage.dart';
 
 
 void main() => runApp(MyApp());
@@ -19,7 +21,7 @@ class MyApp extends StatelessWidget {
   final routes = <String, WidgetBuilder>{
     '/forum': (BuildContext context) => new Router(),
     '/Design': (BuildContext context) => new Design(),
-    '/': (BuildContext context) => new MyForum(),
+    '/': (BuildContext context) => new HomePage(),
     '/summary': (BuildContext context) => new Summary(),
     '/Fina': (BuildContext context) => new FinancePage(),
   };

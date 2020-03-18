@@ -7,6 +7,7 @@ import 'package:breadslice/widgets/userField.dart';
 import 'package:breadslice/summary.dart';
 import 'package:breadslice/SaveingData.dart';
 import 'package:breadslice/SavePage.dart';
+import 'package:breadslice/components.dart';
 
 
 
@@ -49,44 +50,17 @@ class MyForumState extends State<MyForum>{
     _update();
     //_update();
     return Scaffold(
-      drawer: Drawer(
-        child: Container(
-          alignment: Alignment.center,
-          child: FlatButton(
-            color: Colors.red,
-            child: Text("Save Page"),
-            onPressed: () {
-                Navigator.pop(context);
-                  Navigator.push(context, MaterialPageRoute(
+      appBar: MyComponents.myAppBar((){
+            _displayDialog(context);
+      }) ,
+      drawer: MyComponents.myDrawer((){
+              Navigator.push(context, MaterialPageRoute(
                             builder: (context) => SavedPage(),
                             ));
-                  
-            },
-            ),
-          ),
-      ),
-      appBar: AppBar(
-        title: Text("IOU",
-          ),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.save),
-            onPressed: (){
-                //SaveingData().test(itemList);
-                _displayDialog(context);
-                //  SaveingData.loadData().then((d){
-                //   itemList = d;
-                //   setState(() {              
-                //   });
-                // });
-
-            },
-          ),
-        ],
-      ),
+      }),
       body: _mainList(),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
+       child: Icon(Icons.add),
         onPressed: (){
                 _update();
                 var _data = ItemData();
@@ -94,12 +68,10 @@ class MyForumState extends State<MyForum>{
                 itemList.add( _data);                
                 setState(() {       
                 });
-        
         },
         ),
     );
   }
-
 
    _displayDialog(BuildContext context) async {
     return showDialog(

@@ -2,6 +2,7 @@ import 'package:breadslice/myForum.dart';
 import 'package:flutter/material.dart';
 import 'package:breadslice/SaveingData.dart';
 import 'package:breadslice/magic.dart';
+import 'package:breadslice/components.dart';
 
 
 
@@ -31,6 +32,7 @@ class SavePageState extends State<SavedPage>{
     @override
     Widget build(BuildContext context) {
       return Scaffold(
+        appBar:AppBar(),
           body: Container(
               alignment: Alignment.center,
               child: _myBody()
