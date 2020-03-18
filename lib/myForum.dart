@@ -8,15 +8,19 @@ import 'package:breadslice/summary.dart';
 import 'package:breadslice/SaveingData.dart';
 import 'package:breadslice/SavePage.dart';
 import 'package:breadslice/components.dart';
+import 'package:keyboard_visibility/keyboard_visibility.dart';
+
 
 
 
 class MyForum extends StatefulWidget{
   final List<ItemData> itemList;
-  MyForum({List<ItemData> itemList}):
-    itemList = itemList ?? new List<ItemData>();
+  final TotalData totalData;
+  MyForum({List<ItemData> itemList,TotalData totalData}):
+    itemList = itemList ?? new List<ItemData>(),
+    totalData = totalData ?? new TotalData();
   @override
-  State<StatefulWidget> createState() => MyForumState(this.itemList);
+  State<StatefulWidget> createState() => MyForumState(this.itemList,this.totalData);
 
 }
 class MyForumState extends State<MyForum>{
@@ -25,20 +29,26 @@ class MyForumState extends State<MyForum>{
   TotalData totalData;
   Map<String,double> users;
 
-  MyForumState(List<ItemData> itemList):
+  MyForumState(List<ItemData> itemList, TotalData totalData):
   this.itemList = itemList,
   this.saveFile = new TextEditingController(),
-  this.totalData = new TotalData(),
+  this.totalData = totalData,
   this.users = new Map<String,double>();
 
   @override
   void initState() {
+    KeyboardVisibilityNotification().addNewListener(
+      onHide:(){
+        FocusScope.of(context).unfocus();
+      }
+    );
     var _data = ItemData();
     _data.subList.add(UserData());
     itemList.add(_data);
     super.initState();
   }
-  void _update(){
+  void _update(BuildContext context){
+ 
         Calculations(itemList,totalData,users).calculate();
         // setState(() {
           
@@ -47,18 +57,24 @@ class MyForumState extends State<MyForum>{
   @override
   Widget build(BuildContext context) {
     //print("update");
-    _update();
+    _update(context);
     //_update();
     return Scaffold(
       appBar: MyComponents.myAppBar((){
             _displayDialog(context);
-      }) ,
+      }),
       drawer: MyComponents.myDrawer(context),
-      body: _mainList(),
+      body: GestureDetector(
+        child: _mainList(),
+        onTap: (){
+          // print("yoo");
+           FocusScope.of(context).unfocus();
+        },
+      ),
       floatingActionButton: FloatingActionButton(
        child: Icon(Icons.add),
         onPressed: (){
-                _update();
+                _update(context);
                 var _data = ItemData();
                 _data.subList.add(UserData());
                 itemList.add( _data);                
@@ -76,24 +92,27 @@ class MyForumState extends State<MyForum>{
           return AlertDialog(
             title: Text('Enter a save name'),
             content: TextField(
+            
               controller: saveFile,
-              decoration: InputDecoration(hintText: "Savename"),
+              decoration: InputDecoration(hintText: "File name"),
             ),
             actions: <Widget>[
               new FlatButton(
-                //NOTE: make this better
-                padding: EdgeInsets.fromLTRB(0, 0, 100, 0),
                 onPressed: (){
                   if(saveFile.text == "" || saveFile.text == null) Navigator.of(context).pop();
                   print(saveFile.text);
-                  SaveingData.saveData(itemList,saveFile.text);
+                  
+                  SaveingData.saveData(new IOUData(totalData: totalData, itemData: itemList),saveFile.text);
                   saveFile.text = "";
                   Navigator.of(context).pop();
                 }, 
                 child: Text("Save")
                 ),
+              new Padding(
+                padding: EdgeInsets.fromLTRB(50, 0, 50, 0)
+              ),
               new FlatButton(
-                child: Text('CANCEL'),
+                child: Text('Cancel'),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },

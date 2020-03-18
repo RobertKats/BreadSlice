@@ -62,10 +62,10 @@ class SavePageState extends State<SavedPage>{
       String file = fullPath.replaceRange(0, dbPath.length+1,"");//fullPath.replaceAll(dbPath, "");
       return FlatButton(
         onPressed: ()async{
-            var list = await SaveingData.loadData(file);//Magic.readData(file,type:"db");
-            
+            var iouData = await SaveingData.loadData(file);//Magic.readData(file,type:"db");
+            print(iouData);
             Navigator.push(context, MaterialPageRoute(
-                            builder: (context) =>MyForum(itemList: list,),
+                            builder: (context) =>MyForum( totalData: iouData.totalData ,itemList: iouData.itemData,),
                             ));
 
         }, 

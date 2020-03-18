@@ -7,57 +7,51 @@ import 'dart:convert';
 
 
 
-class ItemDataList {
-  List<ItemData> itemData;
+class IOUData {
+    List<ItemData> itemData;
+    TotalData totalData;
+    static IOUData iouDataFromJson(String str) => IOUData.fromJson(json.decode(str));
 
-    static ItemDataList itemDataListFromJson(String str) => ItemDataList.fromJson(json.decode(str));
-
-    static String itemDataListToJson(List<ItemData> data) => json.encode(toJson(data));
+    static String iouDataToJson(IOUData data) => json.encode(toJson(data));
 
 
 
-  ItemDataList({
+  IOUData({
+    @required
+    this.totalData,
+    @required
     this.itemData,
   });
 
-  factory ItemDataList.fromJson(Map<String, dynamic> json) => ItemDataList(
+  factory IOUData.fromJson(Map<String, dynamic> json) => IOUData(
         itemData: List<ItemData>.from(
             json["ItemData"].map((x) => ItemData.fromJson(x))),
+        totalData: TotalData.fromJson(json["TotalData"]),
       );
 
-  static Map<String, dynamic> toJson(List<ItemData> itemData) => {
-        "ItemData": List<dynamic>.from(itemData.map((x) => x.toJson())),
+  static Map<String, dynamic> toJson(IOUData data) => {
+        "ItemData": List<dynamic>.from(data.itemData.map((x) => x.toJson())),
+        "TotalData": data.totalData.toJson(),
       };
 }
 
 
 class SaveingData{
-
-      void test(List<ItemData> a) async{
-        // print("just a test for now");
-        // //String mydata = a.toJson().toString();
-        // String mydata = ItemData.itemDataToJson(a);
-        // print(mydata);
-        // var out = ItemData.itemDataFromJson(mydata);
-        //saveData(a);
-      }
-
-      static void saveData(List<ItemData> itemList,String fileName) async{
-        String data = ItemDataList.itemDataListToJson(itemList);
+      static void saveData(IOUData mydata,String fileName) async{
+        String data = IOUData.iouDataToJson(mydata);
         await Magic.createDbFolder();       
         await Magic.writeData(data, fileName,type: "db");
         var a = await Magic.dbFileList();
         a.forEach(print);
         print("data writen");
       }
-      static Future<List<ItemData>> loadData(String file) async{
+
+      static Future<IOUData> loadData(String file) async{
           String data = await Magic.readData(file,type:"db");
-          var out = ItemDataList.itemDataListFromJson(data).itemData;
+          print(data);
+          var out = IOUData.iouDataFromJson(data);
           return out;
       }
-
-
-
 
 }
 
@@ -116,4 +110,25 @@ class TotalData{
     TextEditingController tip = new TextEditingController();
     TextEditingController delivery = new TextEditingController();
     String subTotal;
+
+    TotalData({String tax,String tip,String delivery}){
+      this.delivery.text = delivery;
+      this.tip.text = tip;
+      this.tax.text = tax;
+    }
+
+    factory TotalData.fromJson(Map<String, dynamic> json) => TotalData(
+    tax: json["tax"],
+    tip: json["tip"],
+    delivery: json["delivery"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        'tax': tax.text,
+        "tip": tip.text,
+        "delivery": delivery.text
+    };
+
+    
+
 }
