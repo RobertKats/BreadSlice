@@ -42,9 +42,13 @@ class MyForumState extends State<MyForum>{
         FocusScope.of(context).unfocus();
       }
     );
-    var _data = ItemData();
-    _data.subList.add(UserData());
-    itemList.add(_data);
+    if(itemList.length == 0){
+      var _data = ItemData();
+        _data.subList.add(UserData());
+        itemList.add(_data);
+    }else{
+        _update(context);
+    }
     super.initState();
   }
   void _update(BuildContext context){
@@ -237,6 +241,7 @@ class MyForumState extends State<MyForum>{
                        ),
                     
               onPressed: (){
+                          _update(context);
                             Navigator.push(context, MaterialPageRoute(
                             builder: (context) => Summary(users: users, totalData: totalData,),
                             ));        
