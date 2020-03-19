@@ -1,8 +1,10 @@
 import 'package:breadslice/myForum.dart';
+import 'package:breadslice/summary.dart';
 import 'package:flutter/material.dart';
 import 'package:breadslice/SaveingData.dart';
 import 'package:breadslice/magic.dart';
 import 'package:breadslice/components.dart';
+import 'package:breadslice/Calculations.dart';
 
 
 
@@ -35,7 +37,7 @@ class SavePageState extends State<SavedPage>{
                             drawer: MyComponents.myDrawer(context),
                             appBar:AppBar(
                               leading: null,
-                              title: Text("Save Page"),
+                              title: Text("Saved Receipt"),
                             ),
                               body: Container(
                                   alignment: Alignment.center,
@@ -63,11 +65,11 @@ class SavePageState extends State<SavedPage>{
       return FlatButton(
         onPressed: ()async{
             var iouData = await SaveingData.loadData(file);//Magic.readData(file,type:"db");
-            print(iouData);
+            var cal = Calculations(iouData.itemData,iouData.totalData);
+            cal.calculate();
             Navigator.push(context, MaterialPageRoute(
-                            builder: (context) =>MyForum( totalData: iouData.totalData ,itemList: iouData.itemData,),
-                            ));
-
+                            builder: (context) =>Summary(itemList: iouData.itemData , totalData: iouData.totalData ,users: cal.users,),
+                        ));
         }, 
         child: new Text(file));
     }
