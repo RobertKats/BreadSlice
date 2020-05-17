@@ -243,7 +243,8 @@ class MyForumState extends State<MyForum>{
                        ),
                     
               onPressed: (){
-                          _update(context);
+                          _update(context
+                          );                        
                             Navigator.push(context, MaterialPageRoute(
                             builder: (context) => Summary(users: users, totalData: totalData,),
                             ));        

@@ -7,7 +7,7 @@ import 'package:flutter/services.dart' show rootBundle;
 class Magic{
     static final db = "db";
        Magic(){
-          //writeData("lol","LOL.txt",type: "db");
+          
        }
     static Future<Directory> get localDbDir async {
         final path = await localPath;

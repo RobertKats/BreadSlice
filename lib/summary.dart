@@ -11,13 +11,14 @@ class Summary extends StatelessWidget{
     //final List<Users> users;
     final Map<String,double> users;
     final List<ItemData> itemList;
-    Summary({@required this.itemList,@required this.totalData,@required this.users});
+    Summary({this.itemList,@required this.totalData,@required this.users});
   
   @override
   Widget build(BuildContext context) {
         return Scaffold(
             appBar: new AppBar(
             actions: <Widget>[
+              
                 new IconButton(
                   icon: Icon(Icons.edit),
                    onPressed: (){
