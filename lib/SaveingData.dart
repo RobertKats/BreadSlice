@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:breadslice/magic.dart';
+import 'package:breadslice/StorageSupport.dart';
 import 'dart:convert';
 
 
@@ -39,15 +39,15 @@ class IOUData {
 class SaveingData{
       static void saveData(IOUData mydata,String fileName) async{
         String data = IOUData.iouDataToJson(mydata);
-        await Magic.createDbFolder();       
-        await Magic.writeData(data, fileName,type: "db");
-        var a = await Magic.dbFileList();
+        await StorageSupport.createDbFolder();       
+        await StorageSupport.writeData(data, fileName,type: "db");
+        var a = await StorageSupport.dbFileList();
         a.forEach(print);
         print("data writen");
       }
 
       static Future<IOUData> loadData(String file) async{
-          String data = await Magic.readData(file,type:"db");
+          String data = await StorageSupport.readData(file,type:"db");
           print(data);
           var out = IOUData.iouDataFromJson(data);
           return out;

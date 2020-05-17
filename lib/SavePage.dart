@@ -2,7 +2,7 @@ import 'package:breadslice/myForum.dart';
 import 'package:breadslice/summary.dart';
 import 'package:flutter/material.dart';
 import 'package:breadslice/SaveingData.dart';
-import 'package:breadslice/magic.dart';
+import 'package:breadslice/StorageSupport.dart';
 import 'package:breadslice/components.dart';
 import 'package:breadslice/Calculations.dart';
 
@@ -21,10 +21,10 @@ class SavePageState extends State<SavedPage>{
   @override
   void initState() { 
 
-    Magic.localDbDir.then((path){
+    StorageSupport.localDbDir.then((path){
       dbPath = path.path;
     });
-    Magic.dbFileList().then((list){
+    StorageSupport.dbFileList().then((list){
       saves = list;
       setState(() {});
     });
