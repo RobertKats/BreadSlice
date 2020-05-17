@@ -1,16 +1,10 @@
-# breadslice
+# IOU
 
-A new Flutter project.
+A simple app to help split bills with friends. 
+This app was made to fairly split bills, by taking the tax on each item and not the whole order.   
 
-## Getting Started
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+<!-- ![breadSliceMainPage](https://user-images.githubusercontent.com/25330574/82163061-bc3e8c00-9876-11ea-8ad7-8c8c44da87a5.jpg) -->
+<p align="center">
+<img src="https://user-images.githubusercontent.com/25330574/82163061-bc3e8c00-9876-11ea-8ad7-8c8c44da87a5.jpg" width="30%">
+</p>
