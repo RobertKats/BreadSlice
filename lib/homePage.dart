@@ -1,3 +1,4 @@
+import 'package:breadslice/components.dart';
 import 'package:breadslice/myForum.dart';
 import 'package:breadslice/widgets/TotalField.dart';
 import 'package:breadslice/widgets/userSummary.dart';
@@ -14,10 +15,10 @@ class HomePage extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
 
-      
-      return WillPopScope(
+      return WillPopScope(      
         child: Scaffold(
-            body: MyForum(),
+            body: MyForum()
+            //appBar: MyComponents.myAppBar(null),
           ),
         onWillPop: () async => false,
          );

@@ -60,35 +60,56 @@ class MyForumState extends State<MyForum>{
        // var a = new Calculations(itemList,totalData);
 
   }
-  @override
-  Widget build(BuildContext context) {
-    //print("update");
-    _update(context);
-    //_update();
-    return Scaffold(
-      appBar: MyComponents.myAppBar((){
-            _displayDialog(context);
-      }),
-      drawer: MyComponents.myDrawer(context),
-      body: GestureDetector(
-        child: _mainList(),
-        onTap: (){
-          // print("yoo");
-           FocusScope.of(context).unfocus();
-        },
-      ),
-      floatingActionButton: FloatingActionButton(
-       child: Icon(Icons.add),
-        onPressed: (){
-                _update(context);
+
+  void addToList(){
+      _update(context);
                 var _data = ItemData();
                 _data.subList.add(UserData());
                 itemList.add( _data);                
                 setState(() {       
                 });
-        },
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    //print("update");
+    _update(context);
+    //_update();
+
+    // return Container(
+
+    //   child: _mainList(),
+
+    // );
+
+return WillPopScope(  
+
+      onWillPop: () async => false,
+
+      child: Scaffold(
+        appBar: MyComponents.myAppBar((){
+              _displayDialog(context);
+        }),
+        drawer: MyComponents.myDrawer(context),
+        body: GestureDetector(
+          child: _mainList(),
+          onTap: (){
+            FocusScope.of(context).unfocus();
+          },
         ),
-    );
+        floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+          onPressed: (){
+                  _update(context);
+                  var _data = ItemData();
+                  _data.subList.add(UserData());
+                  itemList.add( _data);                
+                  setState(() {       
+                  });
+          },
+          ),
+      )
+  );
   }
 
    _displayDialog(BuildContext context) async {

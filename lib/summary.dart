@@ -6,7 +6,7 @@ import 'package:breadslice/widgets/userSummary.dart';
 
 
 class Summary extends StatelessWidget{
-    
+    //TODO: Remake the summary page as a widget component and then wrap that in a view 
     final TotalData totalData;
     //final List<Users> users;
     final Map<String,double> users;
@@ -18,14 +18,13 @@ class Summary extends StatelessWidget{
         return Scaffold(
             appBar: new AppBar(
             actions: <Widget>[
-              
                 new IconButton(
                   icon: Icon(Icons.edit),
                    onPressed: (){
-                     Navigator.pop(context);
-                     Navigator.push(context, MaterialPageRoute(
+                     Navigator.pushAndRemoveUntil(context,  MaterialPageRoute(
                             builder: (context) =>MyForum(itemList: itemList, totalData: totalData,),
-                            ));
+                            ),                     
+                      ModalRoute.withName ('/'));
                    }
                    ),
             ],
