@@ -98,17 +98,32 @@ class MyForumState extends State<MyForum> {
     return showDialog(
         context: context,
         builder: (context) {
+          bool _saveFileValidator = false; 
+          return StatefulBuilder( // used allow for set state in AlertDialog
+            builder: (context, setState){
           return AlertDialog(
             title: Text('Enter a save name'),
             content: TextField(
               controller: saveFile,
-              decoration: InputDecoration(hintText: "File name"),
+              decoration: InputDecoration(
+                hintText: "File name",
+                errorText: _saveFileValidator ? "Value can't be empty" : null,                
+                ),
             ),
             actions: <Widget>[
               new FlatButton(
                   onPressed: () {
-                    if (saveFile.text == "" || saveFile.text == null)
-                      Navigator.of(context).pop();
+                    if (saveFile.text == "" || saveFile.text == null){
+                      // Navigator.of(context).pop();
+                      _saveFileValidator = true;
+                      setState(() {
+                        print("update");
+                      });
+                      print("no save file");
+                      return; // dont try to save data 
+                    }else{
+                      _saveFileValidator = true;
+                    }
                     print(saveFile.text);
 
                     SaveingData.saveData(
@@ -127,6 +142,11 @@ class MyForumState extends State<MyForum> {
               )
             ],
           );
+
+
+          });
+          
+          
         });
   }
 
